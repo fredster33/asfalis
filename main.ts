@@ -50,9 +50,7 @@ let distance = 0
 let sentHelp = 0
 let askedForHelp = 0
 let menu = 0
-let compassFormat = 0
 let timeFormat = 24
-let tempFormat = 0
 let radioChannel = 33
 menu = 0
 askedForHelp = 0
@@ -80,6 +78,7 @@ loops.everyInterval(500, function () {
             basic.showString(timeanddate.time(timeanddate.TimeFormat.HMM))
         }
     } else if (menu == 2) {
+        let tempFormat = 0
         basic.clearScreen()
         if (tempFormat == 0) {
             basic.showString("" + input.temperature() + "C")
@@ -89,6 +88,7 @@ loops.everyInterval(500, function () {
             basic.showString("" + input.temperature() + "C" + "+" + input.temperature() * 33.8 + "F")
         }
     } else if (menu == 3) {
+        let compassFormat = 0
         basic.clearScreen()
         if (compassFormat == 0) {
             simpleCompass()
