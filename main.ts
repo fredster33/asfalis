@@ -1,8 +1,18 @@
+function simpleCompass () {
+    if (Math.constrain(input.compassHeading(), 315, 360) == input.compassHeading()) {
+        basic.showString("N")
+    } else if (Math.constrain(input.compassHeading(), 0, 44) == input.compassHeading()) {
+        basic.showString("N")
+    } else if (Math.constrain(input.compassHeading(), 45, 134) == input.compassHeading()) {
+        basic.showString("E")
+    } else if (Math.constrain(input.compassHeading(), 135, 224) == input.compassHeading()) {
+        basic.showString("S")
+    } else {
+        basic.showString("W")
+    }
+}
 input.onButtonPressed(Button.A, function () {
-    if (askedForHelp == 1) {
-        exitHelpMenu = 1
-        menu += 1
-    } else if (menu <= 3) {
+    if (menu <= 3) {
         menu += 1
     } else {
         menu = 0
@@ -10,24 +20,42 @@ input.onButtonPressed(Button.A, function () {
 })
 input.onButtonPressed(Button.B, function () {
     if (askedForHelp == 1) {
-        if (exitHelpMenu == 0) {
-            sentHelp = 1
-            radio.sendString("HELP")
-            basic.showIcon(IconNames.Yes)
-        }
+        sentHelp = 1
+        radio.sendString("HELP")
+        basic.showIcon(IconNames.Yes)
     }
 })
+function detailedCompass () {
+    if (Math.constrain(input.compassHeading(), 338, 360) == input.compassHeading()) {
+        basic.showString("N")
+    } else if (Math.constrain(input.compassHeading(), 0, 22) == input.compassHeading()) {
+        basic.showString("N")
+    } else if (Math.constrain(input.compassHeading(), 23, 67) == input.compassHeading()) {
+        basic.showString("NE")
+    } else if (Math.constrain(input.compassHeading(), 68, 112) == input.compassHeading()) {
+        basic.showString("E")
+    } else if (Math.constrain(input.compassHeading(), 113, 157) == input.compassHeading()) {
+        basic.showString("SE")
+    } else if (Math.constrain(input.compassHeading(), 158, 202) == input.compassHeading()) {
+        basic.showString("S")
+    } else if (Math.constrain(input.compassHeading(), 203, 247) == input.compassHeading()) {
+        basic.showString("SW")
+    } else if (Math.constrain(input.compassHeading(), 248, 292) == input.compassHeading()) {
+        basic.showString("W")
+    } else {
+        basic.showString("NW")
+    }
+}
 let distance = 0
-let exitHelpMenu = 0
 let sentHelp = 0
 let askedForHelp = 0
 let menu = 0
 let compassFormat = 0
-menu = 0
 let timeFormat = 24
 let tempFormat = 0
-askedForHelp = 0
 let radioChannel = 33
+menu = 0
+askedForHelp = 0
 sentHelp = 0
 radio.setGroup(radioChannel)
 if (timeFormat == 12) {
@@ -62,7 +90,17 @@ loops.everyInterval(500, function () {
         }
     } else if (menu == 3) {
         basic.clearScreen()
-        basic.showString("N")
+        if (compassFormat == 0) {
+            simpleCompass()
+        } else if (compassFormat == 1) {
+            detailedCompass()
+        } else if (compassFormat == 2) {
+            simpleCompass()
+            basic.showString("(" + input.compassHeading() + ")")
+        } else {
+            detailedCompass()
+            basic.showString("(" + input.compassHeading() + ")")
+        }
     } else if (sentHelp == 0) {
         askedForHelp = 1
         basic.clearScreen()
