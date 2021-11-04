@@ -5,14 +5,16 @@ input.onButtonPressed(Button.A, function () {
         menu = 0
     }
 })
-let askedForHelp = 0
-let showedHelpInstructions = 0
 let distance = 0
-let radioChannel = 0
 let menu = 0
 let compassFormat = 0
 menu = 0
 let timeFormat = 24
+let tempFormat = 0
+let showHelpConfirmation = 0
+let showedHelpInstructions = 0
+let askedForHelp = 0
+let radioChannel = 33
 radio.setGroup(radioChannel)
 if (timeFormat == 12) {
     timeanddate.setTime(5, 24, 0, timeanddate.MornNight.AM)
@@ -36,7 +38,6 @@ loops.everyInterval(500, function () {
             basic.showString(timeanddate.time(timeanddate.TimeFormat.HMM))
         }
     } else if (menu == 2) {
-        let tempFormat = 0
         basic.clearScreen()
         if (tempFormat == 0) {
             basic.showString("" + input.temperature() + "C")
