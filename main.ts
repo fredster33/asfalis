@@ -1,20 +1,34 @@
 input.onButtonPressed(Button.A, function () {
-    if (menu <= 3) {
+    if (askedForHelp == 1) {
+        exitHelpMenu = 1
+        menu += 1
+    } else if (menu <= 3) {
         menu += 1
     } else {
         menu = 0
     }
 })
+input.onButtonPressed(Button.B, function () {
+    if (askedForHelp == 1) {
+        if (exitHelpMenu == 0) {
+            sentHelp = 1
+            radio.sendString("HELP")
+            basic.showIcon(IconNames.Yes)
+        }
+    }
+})
 let distance = 0
+let exitHelpMenu = 0
+let sentHelp = 0
+let askedForHelp = 0
 let menu = 0
 let compassFormat = 0
 menu = 0
 let timeFormat = 24
 let tempFormat = 0
-let showHelpConfirmation = 0
-let showedHelpInstructions = 0
-let askedForHelp = 0
+askedForHelp = 0
 let radioChannel = 33
+sentHelp = 0
 radio.setGroup(radioChannel)
 if (timeFormat == 12) {
     timeanddate.setTime(5, 24, 0, timeanddate.MornNight.AM)
@@ -49,23 +63,10 @@ loops.everyInterval(500, function () {
     } else if (menu == 3) {
         basic.clearScreen()
         basic.showString("N")
-    } else {
+    } else if (sentHelp == 0) {
+        askedForHelp = 1
         basic.clearScreen()
-        if (showedHelpInstructions == 0) {
-            basic.showString("HELP?")
-        }
-        showedHelpInstructions = 1
-    }
-})
-basic.forever(function () {
-    if (showedHelpInstructions == 1) {
-        if (askedForHelp == 0) {
-            if (input.buttonIsPressed(Button.B)) {
-                askedForHelp = 1
-                radio.sendString("HELP")
-                basic.showIcon(IconNames.Yes)
-            }
-        }
+        basic.showString("HELP?")
     }
 })
 basic.forever(function () {
