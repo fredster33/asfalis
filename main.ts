@@ -18,6 +18,15 @@ input.onButtonPressed(Button.A, function () {
         menu = 0
     }
 })
+radio.onReceivedString(function (receivedString) {
+    if (receivedString == "HELP") {
+        recievedMessage = 1
+        basic.showString("HELP")
+    } else if (receivedString == "FALL") {
+        recievedMessage = 1
+        basic.showString("FALL")
+    }
+})
 input.onButtonPressed(Button.B, function () {
     if (askedForHelp == 1) {
         sentHelp = 1
@@ -47,6 +56,7 @@ function detailedCompass () {
     }
 }
 let distance = 0
+let recievedMessage = 0
 let sentHelp = 0
 let askedForHelp = 0
 let menu = 0
@@ -55,6 +65,7 @@ let radioChannel = 33
 menu = 0
 askedForHelp = 0
 sentHelp = 0
+recievedMessage = 0
 radio.setGroup(radioChannel)
 if (timeFormat == 12) {
     timeanddate.setTime(5, 24, 0, timeanddate.MornNight.AM)
@@ -62,49 +73,51 @@ if (timeFormat == 12) {
     timeanddate.set24HourTime(13, 30, 0)
 }
 loops.everyInterval(500, function () {
-    if (menu == 0) {
-        basic.clearScreen()
-        // anita is a genius
-        // ask anita if I forgot
-        led.plotBarGraph(
-        101 - distance,
-        100
-        )
-    } else if (menu == 1) {
-        basic.clearScreen()
-        if (timeFormat == 12) {
-            basic.showString(timeanddate.time(timeanddate.TimeFormat.HMMAMPM))
-        } else {
-            basic.showString(timeanddate.time(timeanddate.TimeFormat.HMM))
+    if (recievedMessage == 0) {
+        if (menu == 0) {
+            basic.clearScreen()
+            // anita is a genius
+            // ask anita if I forgot
+            led.plotBarGraph(
+            101 - distance,
+            100
+            )
+        } else if (menu == 1) {
+            basic.clearScreen()
+            if (timeFormat == 12) {
+                basic.showString(timeanddate.time(timeanddate.TimeFormat.HMMAMPM))
+            } else {
+                basic.showString(timeanddate.time(timeanddate.TimeFormat.HMM))
+            }
+        } else if (menu == 2) {
+            let tempFormat = 0
+            basic.clearScreen()
+            if (tempFormat == 0) {
+                basic.showString("" + input.temperature() + "C")
+            } else if (tempFormat == 1) {
+                basic.showString("" + input.temperature() * 33.8 + "F")
+            } else {
+                basic.showString("" + input.temperature() + "C" + "+" + input.temperature() * 33.8 + "F")
+            }
+        } else if (menu == 3) {
+            let compassFormat = 0
+            basic.clearScreen()
+            if (compassFormat == 0) {
+                simpleCompass()
+            } else if (compassFormat == 1) {
+                detailedCompass()
+            } else if (compassFormat == 2) {
+                simpleCompass()
+                basic.showString("(" + input.compassHeading() + ")")
+            } else {
+                detailedCompass()
+                basic.showString("(" + input.compassHeading() + ")")
+            }
+        } else if (sentHelp == 0) {
+            askedForHelp = 1
+            basic.clearScreen()
+            basic.showString("HELP?")
         }
-    } else if (menu == 2) {
-        let tempFormat = 0
-        basic.clearScreen()
-        if (tempFormat == 0) {
-            basic.showString("" + input.temperature() + "C")
-        } else if (tempFormat == 1) {
-            basic.showString("" + input.temperature() * 33.8 + "F")
-        } else {
-            basic.showString("" + input.temperature() + "C" + "+" + input.temperature() * 33.8 + "F")
-        }
-    } else if (menu == 3) {
-        let compassFormat = 0
-        basic.clearScreen()
-        if (compassFormat == 0) {
-            simpleCompass()
-        } else if (compassFormat == 1) {
-            detailedCompass()
-        } else if (compassFormat == 2) {
-            simpleCompass()
-            basic.showString("(" + input.compassHeading() + ")")
-        } else {
-            detailedCompass()
-            basic.showString("(" + input.compassHeading() + ")")
-        }
-    } else if (sentHelp == 0) {
-        askedForHelp = 1
-        basic.clearScreen()
-        basic.showString("HELP?")
     }
 })
 basic.forever(function () {
