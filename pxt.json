@@ -3,10 +3,10 @@
     "description": "",
     "dependencies": {
         "core": "*",
-        "radio": "*",
         "microphone": "*",
         "microbit-pxt-timeanddate": "github:bsiever/microbit-pxt-timeanddate#v2.0.24",
-        "pxt-sonar": "github:microsoft/pxt-sonar#v0.0.5"
+        "pxt-sonar": "github:microsoft/pxt-sonar#v0.0.5",
+        "bluetooth": "*"
     },
     "files": [
         "main.blocks",

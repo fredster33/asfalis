@@ -1,3 +1,8 @@
+/**
+ * radio send string HELP
+ * 
+ * replace with "bluetooth uart write string e:HELP"
+ */
 function simpleCompass () {
     if (Math.constrain(input.compassHeading(), 315, 360) == input.compassHeading()) {
         basic.showString("N")
@@ -18,11 +23,18 @@ input.onButtonPressed(Button.A, function () {
         menu = 0
     }
 })
-radio.onReceivedString(function (receivedString) {
-    if (receivedString == "HELP") {
+/**
+ * on radio recieved recievedstring
+ * 
+ * if recievedstring
+ * 
+ * else if recievedstring
+ */
+bluetooth.onUartDataReceived(serial.delimiters(Delimiters.NewLine), function () {
+    if (bluetooth.uartReadUntil(serial.delimiters(Delimiters.NewLine)) == "e:HELP") {
         recievedMessage = 1
         basic.showString("HELP")
-    } else if (receivedString == "FALL") {
+    } else if (bluetooth.uartReadUntil(serial.delimiters(Delimiters.NewLine)) == "e:FALL") {
         recievedMessage = 1
         basic.showString("FALL")
     }
@@ -30,7 +42,7 @@ radio.onReceivedString(function (receivedString) {
 input.onButtonPressed(Button.B, function () {
     if (askedForHelp == 1) {
         sentHelp = 1
-        radio.sendString("HELP")
+        bluetooth.uartWriteString("e:HELP")
         basic.showIcon(IconNames.Yes)
     }
 })
@@ -55,6 +67,11 @@ function detailedCompass () {
         basic.showString("NW")
     }
 }
+/**
+ * radio set group radioChannel
+ * 
+ * (just delete, replace with start bluetooth)
+ */
 let distance = 0
 let recievedMessage = 0
 let sentHelp = 0
@@ -66,7 +83,8 @@ menu = 0
 askedForHelp = 0
 sentHelp = 0
 recievedMessage = 0
-radio.setGroup(radioChannel)
+bluetooth.startUartService()
+bluetooth.setTransmitPower(7)
 if (timeFormat == 12) {
     timeanddate.setTime(5, 24, 0, timeanddate.MornNight.AM)
 } else {
