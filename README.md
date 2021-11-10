@@ -6,6 +6,7 @@
 ![GitHub release (latest SemVer)](https://img.shields.io/github/v/release/fredster33/asfalis)
 ![GitHub deployments](https://img.shields.io/github/deployments/fredster33/asfalis/github-pages?label=website%20build)
 ![Maintenance](https://img.shields.io/maintenance/yes/2021)
+
 An open-source, highly extensible bicycle safety device powered by the BBC Microbit
 
 ## About
