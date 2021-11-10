@@ -11,12 +11,12 @@ An open-source, highly extensible bicycle safety device powered by the BBC Micro
 ## About
 Asfalis is a bicycle safety device written in TypeScript and translated into Blockly and Python (MakeCode flavour) that is simple and elegant. Asfalis has the following features:
 
--Proximity detection
--Time
--Compass
--Temperature
--Local requests for asisstance - once activated, the device will send an emergency help message to all Asfalis devices in the area. The Microbit 
--Fall detection
+* Proximity detection
+* Time
+* Compass
+* Temperature
+* Local requests for asisstance - once activated, the device will send an emergency help message to all Asfalis devices in the area. The Microbit 
+* Fall detection
 
 ### What does the name mean?
 Asfalis means "safe" in Greek 😀
