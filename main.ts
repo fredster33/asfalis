@@ -70,8 +70,9 @@ recievedMessage = 0
 radio.setGroup(33)
 radio.setTransmitPower(7)
 radio.setTransmitSerialNumber(false)
+input.calibrateCompass()
 if (timeFormat == 12) {
-    timeanddate.setTime(5, 24, 0, timeanddate.MornNight.AM)
+    timeanddate.setTime(8, 10, 0, timeanddate.MornNight.PM)
 } else {
     timeanddate.set24HourTime(13, 30, 0)
 }
@@ -79,12 +80,29 @@ loops.everyInterval(500, function () {
     if (recievedMessage == 0) {
         if (menu == 0) {
             basic.clearScreen()
-            // anita is a genius
-            // ask anita if I forgot
-            led.plotBarGraph(
-            201 - distance,
-            200
-            )
+            if (distance != 0) {
+                if (distance <= 100) {
+                    led.plotBarGraph(
+                    101 - distance,
+                    100
+                    )
+                } else if (distance > 100) {
+                    // anita is a genius
+                    // ask anita if I forgot
+                    led.plotBarGraph(
+                    151 - distance,
+                    150
+                    )
+                } else {
+                    basic.showLeds(`
+                        . . . . .
+                        . . . . .
+                        . . . . .
+                        . . . . .
+                        . . . . .
+                        `)
+                }
+            }
         } else if (menu == 1) {
             basic.clearScreen()
             if (timeFormat == 12) {
@@ -126,7 +144,7 @@ loops.everyInterval(500, function () {
 basic.forever(function () {
     distance = sonar.ping(
     DigitalPin.P0,
-    DigitalPin.P2,
+    DigitalPin.P1,
     PingUnit.Centimeters
     )
 })
