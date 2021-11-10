@@ -1,8 +1,3 @@
-/**
- * radio send string HELP
- * 
- * replace with "bluetooth uart write string e:HELP"
- */
 function simpleCompass () {
     if (Math.constrain(input.compassHeading(), 315, 360) == input.compassHeading()) {
         basic.showString("N")
@@ -23,26 +18,21 @@ input.onButtonPressed(Button.A, function () {
         menu = 0
     }
 })
-/**
- * on radio recieved recievedstring
- * 
- * if recievedstring
- * 
- * else if recievedstring
- */
-bluetooth.onUartDataReceived(serial.delimiters(Delimiters.NewLine), function () {
-    if (bluetooth.uartReadUntil(serial.delimiters(Delimiters.NewLine)) == "e:HELP") {
+radio.onReceivedString(function (receivedString) {
+    if (receivedString == "HELP") {
         recievedMessage = 1
         basic.showString("HELP")
-    } else if (bluetooth.uartReadUntil(serial.delimiters(Delimiters.NewLine)) == "e:FALL") {
+        recievedMessage = 0
+    } else if (receivedString == "FALL") {
         recievedMessage = 1
         basic.showString("FALL")
+        recievedMessage = 0
     }
 })
 input.onButtonPressed(Button.B, function () {
     if (askedForHelp == 1) {
         sentHelp = 1
-        bluetooth.uartWriteString("e:HELP")
+        radio.sendString("HELP")
         basic.showIcon(IconNames.Yes)
     }
 })
@@ -67,24 +57,19 @@ function detailedCompass () {
         basic.showString("NW")
     }
 }
-/**
- * radio set group radioChannel
- * 
- * (just delete, replace with start bluetooth)
- */
 let distance = 0
 let recievedMessage = 0
 let sentHelp = 0
 let askedForHelp = 0
 let menu = 0
 let timeFormat = 24
-let radioChannel = 33
 menu = 0
 askedForHelp = 0
 sentHelp = 0
 recievedMessage = 0
-bluetooth.startUartService()
-bluetooth.setTransmitPower(7)
+radio.setGroup(33)
+radio.setTransmitPower(7)
+radio.setTransmitSerialNumber(false)
 if (timeFormat == 12) {
     timeanddate.setTime(5, 24, 0, timeanddate.MornNight.AM)
 } else {
@@ -97,8 +82,8 @@ loops.everyInterval(500, function () {
             // anita is a genius
             // ask anita if I forgot
             led.plotBarGraph(
-            101 - distance,
-            100
+            201 - distance,
+            200
             )
         } else if (menu == 1) {
             basic.clearScreen()
