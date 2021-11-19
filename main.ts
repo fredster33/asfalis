@@ -1,5 +1,4 @@
-function simpleCompass() {
-    // Show the compass heading as a single character
+function simpleCompass () {
     if (Math.constrain(input.compassHeading(), 315, 360) == input.compassHeading()) {
         basic.showString("N")
     } else if (Math.constrain(input.compassHeading(), 0, 44) == input.compassHeading()) {
@@ -12,8 +11,32 @@ function simpleCompass() {
         basic.showString("W")
     }
 }
-function detailedCompass() {
-    // Show the compass heading as a maximum of two characters
+input.onButtonPressed(Button.A, function () {
+    if (menu <= 3) {
+        menu += 1
+    } else {
+        menu = 0
+    }
+})
+radio.onReceivedString(function (receivedString) {
+    if (receivedString == "HELP") {
+        recievedMessage = 1
+        basic.showString("HELP")
+        recievedMessage = 0
+    } else if (receivedString == "FALL") {
+        recievedMessage = 1
+        basic.showString("FALL")
+        recievedMessage = 0
+    }
+})
+input.onButtonPressed(Button.B, function () {
+    if (askedForHelp == 1) {
+        sentHelp = 1
+        radio.sendString("HELP")
+        basic.showIcon(IconNames.Yes)
+    }
+})
+function detailedCompass () {
     if (Math.constrain(input.compassHeading(), 338, 360) == input.compassHeading()) {
         basic.showString("N")
     } else if (Math.constrain(input.compassHeading(), 0, 22) == input.compassHeading()) {
@@ -56,32 +79,25 @@ if (timeFormat == 12) {
 loops.everyInterval(500, function () {
     if (recievedMessage == 0) {
         if (menu == 0) {
-            //Proximity
             basic.clearScreen()
             if (distance != 0) {
-                //Evens out the LEDS by "reversing" the distance
                 if (distance <= 100) {
                     led.plotBarGraph(
                     101 - distance,
                     100
                     )
                 } else if (distance > 100) {
+                    // anita is a genius
+                    // ask anita if I forgot
                     led.plotBarGraph(
                     151 - distance,
                     150
                     )
                 } else {
-                    basic.showLeds(`
-                        . . . . .
-                        . . . . .
-                        . . . . .
-                        . . . . .
-                        . . . . .
-                        `)
+                    basic.clearScreen()
                 }
             }
         } else if (menu == 1) {
-            //Time
             basic.clearScreen()
             if (timeFormat == 12) {
                 basic.showString(timeanddate.time(timeanddate.TimeFormat.HMMAMPM))
@@ -89,7 +105,6 @@ loops.everyInterval(500, function () {
                 basic.showString(timeanddate.time(timeanddate.TimeFormat.HMM))
             }
         } else if (menu == 2) {
-            //Temperature
             let tempFormat = 0
             basic.clearScreen()
             if (tempFormat == 0) {
@@ -100,7 +115,6 @@ loops.everyInterval(500, function () {
                 basic.showString("" + input.temperature() + "C" + "+" + input.temperature() * 33.8 + "F")
             }
         } else if (menu == 3) {
-            //Compass
             let compassFormat = 0
             basic.clearScreen()
             if (compassFormat == 0) {
@@ -115,7 +129,6 @@ loops.everyInterval(500, function () {
                 basic.showString("(" + input.compassHeading() + ")")
             }
         } else if (sentHelp == 0) {
-            //Help
             askedForHelp = 1
             basic.clearScreen()
             basic.showString("HELP?")
@@ -128,33 +141,4 @@ basic.forever(function () {
     DigitalPin.P1,
     PingUnit.Centimeters
     )
-})
-input.onButtonPressed(Button.A, function () {
-    //Menu
-    if (menu <= 3) {
-        menu += 1
-    } else {
-        menu = 0
-    }
-})
-input.onButtonPressed(Button.B, function () {
-    //Ask for help
-    if (askedForHelp == 1) {
-        sentHelp = 1
-        radio.sendString("HELP")
-        basic.showIcon(IconNames.Yes)
-    }
-})
-radio.onReceivedString(function (receivedString) {
-    if (receivedString == "HELP") {
-        //Send HELP
-        recievedMessage = 1
-        basic.showString("HELP")
-        recievedMessage = 0
-    } else if (receivedString == "FALL") {
-        //Alert that the person has fallen
-        recievedMessage = 1
-        basic.showString("FALL")
-        recievedMessage = 0
-    }
 })
