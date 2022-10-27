@@ -1,4 +1,5 @@
 # Asfalis
+<div align="center">
 <img src="https://raw.githubusercontent.com/fredster33/asfalis/master/compatibility.png" width="170" height="50" />
 
 ![Build status badge](https://github.com/fredster33/bike-new/workflows/MakeCode/badge.svg)
@@ -8,6 +9,7 @@
 ![Maintenance](https://img.shields.io/maintenance/yes/2022)
 
 An open-source, highly extensible bicycle safety device powered by the BBC Microbit
+</div>
 
 ## About
 Asfalis is a bicycle safety device written in TypeScript and translated into Blockly and Python (MakeCode flavour) that is simple and elegant. Asfalis has the following features:
@@ -16,7 +18,7 @@ Asfalis is a bicycle safety device written in TypeScript and translated into Blo
 * Time
 * Compass
 * Temperature
-* Local requests for asisstance - once activated, the device will send an emergency help message to all Asfalis devices in the area. The Microbit 
+* Local requests for asisstance - once activated, the device will send an emergency help message to all Asfalis devices in the area
 * Fall detection
 
 ### What does the name mean?
